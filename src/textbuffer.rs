@@ -27,9 +27,6 @@ impl TextBuffer{
         match input {
             WindowInput::Char(char) => {
                 let charcode = char as u32;
-                if charcode >= 0x20 && charcode <= 0x7E{
-
-                }
                 match charcode {
                     0x20..=0x7E => {
                         if self.lines.len() == 0{

@@ -43,6 +43,8 @@ dependencies = [
  "lsp-types",
  "ncurses",
  "pad",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
