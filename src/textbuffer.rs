@@ -82,6 +82,7 @@ impl TextBuffer{
                     }
                     _ => {}
                 };
+                self.fix_cursor_y();
                 self.scroll_page_to_make_cursor_visible(dimensions);
                 //self.lines.push((char as u32).to_string());
             }
@@ -99,6 +100,7 @@ impl TextBuffer{
                             x: x as u32,
                             y: pos.y + self.paging.y,
                         };
+                        self.fix_cursor_y();
                     }
                 }
             }
@@ -132,7 +134,7 @@ impl TextBuffer{
         let cursor = self.get_fixed_cursor();
         let x = cursor.x as i32 - self.paging.x as i32;
         let y = cursor.y as i32 - self.paging.y as i32;
-        if x < 0 || x > dimensions.x as i32 || y < 0 || y > dimensions.y as i32{
+        if x < 0 || x >= dimensions.x as i32 || y < 0 || y >= dimensions.y as i32{
             None
         } else {
             Some(Vec2u{x: x as u32,y: y as u32})
@@ -146,8 +148,11 @@ impl TextBuffer{
     pub fn fix_cursor(&mut self){
         self.cursor = self.get_fixed_cursor();
     }
+    pub fn fix_cursor_y(&mut self){
+        self.cursor.y = self.cursor.y.min((self.lines.len() as i32-1).max(0) as u32);
+    }
     pub fn scroll_page_to_make_cursor_visible(&mut self, dimensions: Vec2u){
-        //self.paging.y = (self.paging.y.max((self.cursor.y as i32).max(0) as u32)).min(self.cursor.y + (dimensions.y));
+        self.paging.y = (self.paging.y.max((self.cursor.y as i32 - dimensions.y as i32 + 1).max(0) as u32)).min(self.cursor.y);
     }
 }
 #[derive(Debug, Eq, PartialEq, Copy, Clone)]
