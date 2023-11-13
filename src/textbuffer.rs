@@ -32,9 +32,8 @@ impl TextBuffer{
                         if self.lines.len() == 0{
                             self.lines.push(String::new());
                         }
-                        let cursor = self.get_fixed_cursor();
-                        self.lines.get_mut(cursor.y as usize).unwrap().insert(cursor.x as usize, char);
                         self.fix_cursor();
+                        self.lines.get_mut(self.cursor.y as usize).unwrap().insert(self.cursor.x as usize, char);
                         self.cursor.x += 1;
                     }
                     1 => {
@@ -73,6 +72,7 @@ impl TextBuffer{
                         self.lines.remove(self.cursor.y as usize);
                     }
                     10 => {
+                        self.fix_cursor();
                         let (left, right) = self.lines.get(self.cursor.y as usize).unwrap().split_at(self.cursor.x as usize);
                         let (left, right) = (left.to_string(), right.to_string());
                         *self.lines.get_mut(self.cursor.y as usize).unwrap() = left;
@@ -104,6 +104,7 @@ impl TextBuffer{
             WindowInput::Keycode(keycode) => {
                 match keycode {
                     263 => {
+                        self.fix_cursor();
                         if self.cursor.x == 0 {
                             if self.cursor.y > 0{
                                 let line = self.lines.remove(self.cursor.y as usize);
