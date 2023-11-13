@@ -11,7 +11,7 @@ mod lsp;
 
 fn main()
 {
-    let mut lsp = LSP::new();
+    /*let mut lsp = LSP::new();
     lsp.send("initialize", InitializeParams{
         process_id: None,
         root_path: None,
@@ -35,7 +35,7 @@ fn main()
         locale: None,
     }).unwrap());*/
     std::thread::sleep(Duration::from_millis(1000));
-    std::process::exit(0);
+    std::process::exit(0);*/
     let window = Window::new();
     let mut text_buffer = TextBuffer::load_file(Path::new("src/main.rs"));
 

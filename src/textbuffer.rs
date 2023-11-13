@@ -82,6 +82,7 @@ impl TextBuffer{
                     }
                     _ => {}
                 };
+                self.scroll_page_to_make_cursor_visible(dimensions);
                 //self.lines.push((char as u32).to_string());
             }
             WindowInput::Mouse(pos, bstate) => {
@@ -105,6 +106,7 @@ impl TextBuffer{
                 match keycode {
                     263 => {
                         self.fix_cursor();
+                        self.scroll_page_to_make_cursor_visible(dimensions);
                         if self.cursor.x == 0 {
                             if self.cursor.y > 0{
                                 let line = self.lines.remove(self.cursor.y as usize);
@@ -143,6 +145,9 @@ impl TextBuffer{
     }
     pub fn fix_cursor(&mut self){
         self.cursor = self.get_fixed_cursor();
+    }
+    pub fn scroll_page_to_make_cursor_visible(&mut self, dimensions: Vec2u){
+        //self.paging.y = (self.paging.y.max((self.cursor.y as i32).max(0) as u32)).min(self.cursor.y + (dimensions.y));
     }
 }
 #[derive(Debug, Eq, PartialEq, Copy, Clone)]
